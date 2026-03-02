@@ -11,7 +11,7 @@ body{
 }
 
 main{
-    height: 100vh;
+    height: 120vh;
     display: flex;
     flex-direction: column;
 }
@@ -67,8 +67,15 @@ section .task-column{
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+
+section .task-column.hover-over{
+ border: 1px dashed #fff;
+ scale: 1.05;
+}
+
+
 
 section .task-column .heading{
     width: 100%;
@@ -98,4 +105,79 @@ section .task-column button{
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.modal .bg{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(65, 63, 63, 0.404);
+    backdrop-filter: blur(5px)
+
+}
+
+
+.modal {
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+}
+
+.modal.active{
+    display: flex;
+}
+
+
+.modal .center{
+    display: flex;
+    flex-direction: column;
+    background: #1f1f1f;
+    padding: 40px 50px;
+    border-radius: 12px;
+    gap: 15px;
+    z-index: 0;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.modal .center input, .modal .center textarea, .modal .center select{
+ background: #2c2c2c;
+ color: #e0e0e0;
+ border: none;
+ outline: none; 
+ border: 1px solid #444;
+ padding: 15px 15px;
+ font-size: 14px;
+ border-radius: 8px;
+transition: all 0.2s ease;
+}
+
+.modal .center input:focus,
+.modal .center textarea:focus,
+.modal .center select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+}
+
+.modal button{
+    background-color: #4a90e2; 
+    color: #ffffff; 
+    border: none; 
+    outline: none; 
+    padding: 10px; 
+    font-size: 15px; 
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.modal .center button:hover {
+    background: #357abd;
 }
