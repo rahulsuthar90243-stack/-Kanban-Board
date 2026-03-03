@@ -2,6 +2,7 @@
 const todo = document.querySelector("#Todo");
 const progress = document.querySelector("#Progress");
 const done = document.querySelector("#done");
+const columns = [todo, progress, done];
 
 let dragElement = null;
 
@@ -39,6 +40,16 @@ function addEventsOnColumn(column){
 
     column.appendChild(dragElement);
     column.classList.remove("hover-over");
+
+
+      columns.forEach(cal =>{
+      const tasks = cal.querySelectorAll(".task");
+      const count = cal.querySelector(".right");
+
+      count.innerText = tasks.length;
+    })
+
+
   })
 }
 
@@ -92,6 +103,13 @@ addTaskButton.addEventListener("click", ()=>{
   <button>Delete</button>`
 
   todo.appendChild(div)
+
+  columns.forEach(cal =>{
+      const tasks = cal.querySelectorAll(".task");
+      const count = cal.querySelector(".right");
+
+      count.innerText = tasks.length;
+    })
 
   div.addEventListener("drag", (e)=>{
     dragElement = div;
