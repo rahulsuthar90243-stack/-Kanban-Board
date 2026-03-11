@@ -1,3 +1,4 @@
+let tasksData = {}
 
 const todo = document.querySelector("#Todo");
 const progress = document.querySelector("#Progress");
@@ -6,8 +7,63 @@ const columns = [todo, progress, done];
 
 let dragElement = null;
 
-// console.log(todo, progress, done);
+function updateTaskCount(){
+ columns.forEach(cal =>{
+      const tasks = cal.querySelectorAll(".task");
+      const count = cal.querySelector(".right");
 
+      tasksData[cal.id] = Array.from(tasks).map(t =>{
+        return {
+          title: t.querySelector("h2").innerText,
+          desc: t.querySelector("p").innerText,
+        }
+      })
+
+      localStorage.setItem("tasks", JSON.stringify(tasksData));
+      count.innerText = tasks.length;
+    })
+}
+
+function addDeleteEvent(div){
+  const deleteButton = div.querySelector("button");
+
+  deleteButton.addEventListener("click", ()=>{
+    div.remove();
+    updateTaskCount();
+  })
+}
+
+if(localStorage.getItem("tasks")){
+  const data = JSON.parse(localStorage.getItem("tasks"));
+
+  console.log(data);
+
+  for(const col in data){
+    const column = document.querySelector(`#${col}`);
+    data[ col ].forEach(task =>{
+      const div = document.createElement("div");
+
+      div.classList.add("task");
+      div.setAttribute("draggable", "true")
+
+      div.innerHTML = `
+      <h2>${task.title}</h2>
+      <p>${task.desc}</p>
+      <button>Delete</button>`
+
+      column.appendChild(div)
+
+      addDeleteEvent(div)
+
+      div.addEventListener("drag", (e)=>{
+        dragElement = div;
+      })
+    })
+
+  }
+
+  updateTaskCount();
+}
 
 const tasks = document.querySelectorAll(".task");
 
@@ -42,13 +98,14 @@ function addEventsOnColumn(column){
     column.classList.remove("hover-over");
 
 
-      columns.forEach(cal =>{
-      const tasks = cal.querySelectorAll(".task");
-      const count = cal.querySelector(".right");
+    //   columns.forEach(cal =>{
+    //   const tasks = cal.querySelectorAll(".task");
+    //   const count = cal.querySelector(".right");
 
-      count.innerText = tasks.length;
-    })
+    //   count.innerText = tasks.length;
+    // })
 
+    updateTaskCount();
 
   })
 }
@@ -88,7 +145,7 @@ modalBg.addEventListener("click", ()=>{
 
 
 addTaskButton.addEventListener("click", ()=>{
-  const taskTitle = document.querySelector("#inout_title").value
+  const taskTitle = document.querySelector("#input_title").value
   const taskDesc = document.querySelector("#input_desc").value
 
   const div = document.createElement("div");
@@ -104,16 +161,14 @@ addTaskButton.addEventListener("click", ()=>{
 
   todo.appendChild(div)
 
-  columns.forEach(cal =>{
-      const tasks = cal.querySelectorAll(".task");
-      const count = cal.querySelector(".right");
-
-      count.innerText = tasks.length;
-    })
+  updateTaskCount();
 
   div.addEventListener("drag", (e)=>{
     dragElement = div;
   })
+
+  addDeleteEvent(div);
+
 
   modal.classList.remove("active");
 })
